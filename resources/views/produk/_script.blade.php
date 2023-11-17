@@ -6,10 +6,18 @@
         table = $('.table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('produk.listData') }}",
+            ajax: {
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                url: "{{ route('produk.listData') }}",
+                type: "POST"
+            },
             columns: [{
                     data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     data: 'nama',

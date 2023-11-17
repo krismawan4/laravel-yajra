@@ -18,5 +18,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('produk/listData', [ProdukController::class, 'listData'])->name('produk.listData');
+Route::post('produk/listData', [ProdukController::class, 'listData'])->name('produk.listData');
 Route::resource('produk', ProdukController::class);
