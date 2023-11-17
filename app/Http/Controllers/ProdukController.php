@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProdukRequest;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -49,9 +50,10 @@ class ProdukController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProdukRequest $request)
     {
-        //
+        Produk::create($request->validated());
+        return response()->json(['message' => 'berhasil menyimpan data', 'status' => 'success']);
     }
 
     /**
@@ -67,15 +69,18 @@ class ProdukController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $produk = Produk::find($id);
+        return json_encode($produk);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProdukRequest $request, string $id)
     {
-        //
+        $produk = Produk::find($id);
+        $produk->update($request->validated());
+        return response()->json(['message' => 'berhasil menyimpan data', 'status' => 'success']);
     }
 
     /**
@@ -83,6 +88,8 @@ class ProdukController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $produk = Produk::find($id);
+        $produk->delete();
+        return response()->json(['message' => 'berhasil menghapus data', 'status' => 'success']);
     }
 }

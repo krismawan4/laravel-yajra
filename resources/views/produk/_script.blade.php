@@ -32,15 +32,19 @@
             e.preventDefault();
             // Serialize formulir
             let formData = $(this).serialize();
-            if (save_method == 'add') {
-                url_save = `${url}/produk/insert`;
+            if (save_method == 'POST') {
+                url_save = `${url}/produk/`;
             } else {
-                url_save = `${url}/produk/update`;
+                let id = $('#id').val();
+                url_save = `${url}/produk/${id}`;
             }
             console.log(url_save);
             $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
                 url: url_save,
-                type: "POST",
+                type: save_method,
                 dataType: "JSON",
                 data: formData,
                 success: function(data) {
@@ -57,18 +61,18 @@
     });
 
     function addForm() {
-        save_method = 'add';
+        save_method = 'POST';
         $('.modal-title').text('Tambah Produk');
         modalReset();
         modalShow();
     }
 
     function editForm(id) {
-        save_method = 'edit';
+        save_method = 'PUT';
         $('.modal-title').text('Edit Produk');
         modalReset();
         $.ajax({
-            url: `${url}/produk/edit/${id}`,
+            url: `${url}/produk/${id}/edit`,
             type: "GET",
             dataType: "JSON",
             success: function(data) {
@@ -86,8 +90,11 @@
     function deleteData(id) {
         if (confirm('Yakin Hapus Data?')) {
             $.ajax({
-                url: `${url}/produk/delete/${id}`,
-                type: "GET",
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                url: `${url}/produk/${id}`,
+                type: "DELETE",
                 dataType: "JSON",
                 success: function(data) {
                     console.log(data);

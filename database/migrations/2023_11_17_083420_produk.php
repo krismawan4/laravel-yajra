@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('riki_failed_jobs', function (Blueprint $table) {
+        Schema::dropIfExists('riki_produk');
+        Schema::create('riki_produk', function (Blueprint $table) {
             $table->id();
-            $table->string('uuid')->unique();
-            $table->text('connection');
-            $table->text('queue');
-            $table->longText('payload');
-            $table->longText('exception');
-            $table->timestamp('failed_at')->useCurrent();
+            $table->string('nama');
+            $table->decimal('harga', 20, 2);
+            $table->timestamps();
         });
     }
 
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('riki_failed_jobs');
+        Schema::dropIfExists('riki_produk');
     }
 };
